@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        label {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <py-config>
+        packages = ['numpy']
+    </py-config>
+
+    <py-script>
+        import numpy as np
+        from pyscript import Element, when
+
+        selection = np.random.randint(0, 100, 1)[0]
+    </py-script>
+
+<h1>WELCOME TO THE GUESSING GAME</h1>
+<h2>Guess a number 0-100</h2>
+
+    <form>
+        <label for="guess">Guess:</label> 
+        <input name="guess" id="guess">
+        <button type="button" id="submit">Check Guess</button>
+        <label for="result">Result:</label>
+        <div name="result" id="result"></div>
+    </form>
+
+    <py-script>
+        @when("click", selector="#submit")
+        def check_guess(event):
+            user_guess = Element("guess").value
+            result = Element("result")
+            
+            try:
+                user_guess = int(user_guess)
+                if user_guess < 0 or user_guess > 100:
+                    result.write("Please enter a number between 0 and 100.")
+                elif user_guess == selection:
+                    result.write("Congratulations! You guessed correctly.")
+                elif user_guess > selection:
+                    result.write("Try again! Your guess was too high.")
+                else:
+                    result.write("Try again! Your guess was too low.")
+            except ValueError:
+                result.write("Please enter a valid number.")
+    </py-script>
+</body>
+</html>
